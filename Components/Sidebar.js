@@ -5,13 +5,15 @@ import { auth, db } from "../firebase";
 import * as EmailValidator from "email-validator";
 import styled from "styled-components";
 
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ChatIcon from "@material-ui/icons/Chat";
 import SearchIcon from "@material-ui/icons/Search";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 import Chat from "./Chat";
+import { useRouter } from "next/router";
 
 const Sidebar = () => {
+  const router = useRouter();
   const [user] = useAuthState(auth);
   const userChatRef = db
     .collection("chats")
@@ -40,16 +42,26 @@ const Sidebar = () => {
     }
   };
 
+  const logout = () => {
+    auth.signOut();
+    router.push("/");
+  };
+
   return (
     <Container>
       <Header>
-        <UserAvatar src={user?.photoURL} onClick={() => auth.signOut()} />
+        <UserAvatar
+          src={user?.photoURL}
+          onClick={logout}
+          alt="click to logout"
+        />
+        <h3>{user?.displayName}</h3>
         <IconContainer>
           <IconButton>
             <ChatIcon />
           </IconButton>
           <IconButton>
-            <MoreVertIcon />
+            <ExitToAppIcon onClick={logout} />
           </IconButton>
         </IconContainer>
       </Header>

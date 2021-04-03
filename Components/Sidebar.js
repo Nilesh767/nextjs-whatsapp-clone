@@ -10,10 +10,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 import Chat from "./Chat";
-import { useRouter } from "next/router";
 
 const Sidebar = () => {
-  const router = useRouter();
   const [user] = useAuthState(auth);
   const userChatRef = db
     .collection("chats")
@@ -44,7 +42,6 @@ const Sidebar = () => {
 
   const logout = () => {
     auth.signOut();
-    router.push("/");
   };
 
   return (

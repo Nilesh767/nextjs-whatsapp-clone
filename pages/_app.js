@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth, db } from "../firebase";
@@ -10,9 +11,10 @@ import Login from "./login";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   const [user, loading] = useAuthState(auth);
-
   useEffect(() => {
+    router.push("/");
     if (user) {
       db.collection("users").doc(user.uid).set(
         {

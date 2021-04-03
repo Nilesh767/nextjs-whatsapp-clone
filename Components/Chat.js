@@ -8,14 +8,14 @@ import getRecipientEmail from "../util/getRecipientEmail";
 
 const Chat = ({ id, users }) => {
   const router = useRouter();
-  const user = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
-  const [recipientSnapshot] = useCollection(
+  const recipientSnapshot = useCollection(
     db.collection("users").where("email", "==", getRecipientEmail(users, user))
   );
   const recipient = recipientSnapshot?.docs?.[0]?.data();
   const recipientEmail = getRecipientEmail(users, user);
-  
+
   const enterChat = () => {
     router.push(`/chat/${id}`);
   };
@@ -25,7 +25,7 @@ const Chat = ({ id, users }) => {
       {recipient ? (
         <UserAvatar src={recipient?.photoURL} />
       ) : (
-        <UserAvatar>{recipientEmail[0].toUpperCase()}</UserAvatar>
+        <UserAvatar>{recipientEmail[0]?.toUpperCase()}</UserAvatar>
       )}
       <p>{recipientEmail}</p>
     </Container>

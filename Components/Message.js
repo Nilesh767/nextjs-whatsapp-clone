@@ -5,11 +5,9 @@ import moment from "moment";
 import { auth } from "../firebase";
 
 const Message = ({ user, message }) => {
-  const UserLoggedIn = useAuthState(auth);
+  const [userLoggedIn] = useAuthState(auth);
 
-  console.log(user);
-
-  const MessageType = user === UserLoggedIn.email ? Sender : Receiver;
+  const MessageType = user === userLoggedIn.email ? Sender : Receiver;
   return (
     <Container>
       <MessageType>
@@ -23,6 +21,7 @@ const Message = ({ user, message }) => {
 };
 
 export default Message;
+
 const Container = styled.div``;
 
 const MessageElement = styled.p`

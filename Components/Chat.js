@@ -13,7 +13,8 @@ const Chat = ({ id, users }) => {
   const recipientSnapshot = useCollection(
     db.collection("users").where("email", "==", getRecipientEmail(users, user))
   );
-  const recipient = recipientSnapshot?.docs?.[0]?.data();
+  const recipient = recipientSnapshot[0]?.docs?.[0]?.data();
+
   const recipientEmail = getRecipientEmail(users, user);
 
   const enterChat = () => {

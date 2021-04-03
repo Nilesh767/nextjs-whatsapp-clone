@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Avatar, IconButton } from "@material-ui/core";
@@ -48,6 +48,17 @@ const ChatScreen = ({ chat, messages }) => {
     }
   };
 
+  const scrollToBottom = () => {
+    endOfMessageRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, []);
+
   const sendMessage = (e) => {
     e.preventDefault();
 
@@ -76,13 +87,6 @@ const ChatScreen = ({ chat, messages }) => {
       .where("email", "==", getRecipientEmail(chat.users, user))
   );
   const recipient = recipientSnapshot?.docs?.[0]?.data();
-
-  const scrollToBottom = () => {
-    endOfMessageRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
 
   return (
     <Container>

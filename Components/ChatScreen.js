@@ -29,25 +29,15 @@ const ChatScreen = ({ chat, messages }) => {
       .orderBy("timestamp", "asc")
   );
 
-  console.log(chat.users);
-
-  const [recipientSnapshot] = useCollection(
-    db
-      .collection("users")
-      .where("email", "==", getRecipientEmail(chat.users, user))
-  );
-  
-  console.log(recipientSnapshot);
-
   const showMessages = () => {
     if (messagesSnapshot) {
-      return messagesSnapshot.docs.map((message) => (
+      return messagesSnapshot?.docs.map((message) => (
         <Message
           key={message.id}
-          user={message.data().user}
+          user={message?.data().user}
           message={{
-            ...message.data(),
-            timestamp: message.data().timestamp?.toDate().getTime(),
+            ...message?.data(),
+            timestamp: message?.data().timestamp?.toDate().getTime(),
           }}
         />
       ));
@@ -79,12 +69,17 @@ const ChatScreen = ({ chat, messages }) => {
     scrollToBottom();
   };
 
-  const recipient = recipientSnapshot?.docs?.[0]?.data();
   const recipientEmail = getRecipientEmail(chat.users, user);
+  const [recipientSnapshot] = useCollection(
+    db
+      .collection("users")
+      .where("email", "==", getRecipientEmail(chat.users, user))
+  );
+  const recipient = recipientSnapshot?.docs?.[0]?.data();
 
   const scrollToBottom = () => {
     endOfMessageRef.current.scrollIntoView({
-      behaviour: "smooth",
+      behavior: "smooth",
       block: "start",
     });
   };
@@ -144,6 +139,7 @@ const ChatScreen = ({ chat, messages }) => {
 };
 
 export default ChatScreen;
+
 const Container = styled.div``;
 const Header = styled.div`
   top: 0;
